@@ -41,7 +41,7 @@ print(out)
 net.zero_grad()
 out.backward(torch.randn(1, 10))
 
-
+# Loss function
 output = net(input)
 target = torch.randn(10)
 target = target.view(1, -1)
@@ -50,6 +50,38 @@ criterion = nn.MSELoss()
 loss = criterion(output, target)
 print(loss)
 
+# input -> conv2d -> relu -> maxpool2d -> conv2d -> relu -> maxpool2d
+#      -> flatten -> linear -> relu -> linear -> relu -> linear
+#      -> MSELoss
+#      -> loss
+
 print(loss.grad_fn)  # MSELoss
 print(loss.grad_fn.next_functions[0][0])  # Linear
 print(loss.grad_fn.next_functions[0][0].next_functions[0][0])  # ReLU
+
+# backprop
+net.zero_grad()  # zeroes the gradient buffers of all parameters
+
+print("conv1.bias.grad before backward")
+print(net.conv1.bias.grad)
+
+loss.backward()
+
+print("conv1.bias.grad after backward")
+print(net.conv1.bias.grad)
+
+# Update the weights
+lr = 0.01
+for f in net.parameters():
+    f.data.sub_(f.grad.data * lr)
+
+import torch.optim as optim
+
+optimizer = optim.SGD(net.parameters(), lr=0.01)
+
+# in your training loop:
+optimizer.zero_grad()  # zero the gradient buffers
+output = net(input)
+loss = criterion(output, target)
+loss.backward()
+optimizer.step()  # Does the update
