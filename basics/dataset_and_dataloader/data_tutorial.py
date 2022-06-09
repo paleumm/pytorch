@@ -6,11 +6,11 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 
 train_data = datasets.FashionMNIST(
-    root="data", train=True, download=True, transform=ToTensor()
+    root="basics/data", train=True, download=True, transform=ToTensor()
 )
 
 test_data = datasets.FashionMNIST(
-    root="data", train=False, download=True, transform=ToTensor()
+    root="basics/data", train=False, download=True, transform=ToTensor()
 )
 
 labels_map = {
