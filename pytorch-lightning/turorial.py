@@ -37,7 +37,7 @@ train_loader = DataLoader(dataset=dataset,num_workers=16)
 
 autoencoder = LitAutoEncoder()
 
-trainer = pl.Trainer(accelerator="gpu", devices=1)
+trainer = pl.Trainer(accelerator="gpu", devices=1, max_epochs=2)
 trainer.fit(model=autoencoder, train_dataloaders=train_loader)
 
 torch.save(autoencoder.state_dict(), "autoencoder_checkpoint.pth")
