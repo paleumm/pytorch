@@ -2,3 +2,6 @@
 *.pth
 *.pth
 *.pth
+*.0
+*.ckpt
+*.yaml
